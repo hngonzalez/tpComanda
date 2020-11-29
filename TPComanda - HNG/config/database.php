@@ -4,6 +4,7 @@ namespace Config;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
+
 class Database{
     public function __construct(){
         $capsule = new Capsule;
@@ -11,11 +12,11 @@ class Database{
         $capsule->addConnection([
             'driver'    => 'mysql',
             'host'      => 'localhost',
-            'database'  => 'id15458056_tpcomanda',
-            'username'  => 'id15458056_santigo05',
-            'password'  => 'Tpprogramacion-3',
+            'database'  => 'tpcomandautn',
+            'username'  => 'root',
+            'password'  => '',
             'charset'   => 'utf8',
-            // 'collation' => 'utf8_unicode_ci',
+            'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
         ]);
         

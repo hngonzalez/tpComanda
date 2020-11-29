@@ -1,41 +1,22 @@
 <?php
 namespace App\Controllers;
 use Clases\Usuario;
-use Clases\Auto;
-use Clases\Servicio;
-use Clases\Socios;
 use Clases\Personas;
-use Clases\Token;
-use Clases\Archivos;
 
 use App\Models\Socio;
 use App\Models\Empleado;
 use App\Models\EstadoEmpleado;
-use App\Models\Item;
-use App\Models\Turno;
-use App\Models\Pedido;
-
 
 
 class SocioController {
     public $datos = array ('datos' => '.');
     public static function getAllCount () {
-        $rta = Socio::get()->count(); //select * from users
-        // $rta = User::find(1);
-        // $rta = User::where('id', '>',  0)
-        // ->where('campo', 'operador', 'valor')        
-        // ->get();
+        $rta = Socio::get()->count();
 
         return json_encode($rta);
     }
-    public function getAllVehiculos ($request, $response, $args) {
-        $rta = Vehiculo::get();
-        $response->getBody()->write(json_encode($rta));
-        return $response;
-    }
 
     public function getUserEmail($request, $response, $args, $email){
-        // $rta = User::get(); //select * from users
         $rta = User::where('email', $email)
         ->first();
         return $rta;
@@ -43,7 +24,6 @@ class SocioController {
     
     public function registro($request, $response, $args)
     {
-
         $parsedBody = $request->getParsedBody();
         $nombre = $parsedBody['nombre'];
         $usuario = $parsedBody['usuario'];
@@ -51,53 +31,39 @@ class SocioController {
         $clave = $parsedBody['clave'];
         $countSocios = SocioController::getAllCount();
         
-        // echo $nombre . $apellido.$tipo;
-        
         if($nombre != null && $apellido != null){
             
             if($countSocios < 3){
-
                 
                 $rta = Socio::where('nombre', $nombre)->where('apellido',$apellido)->where('usuario',$usuario)->first();
-                // var_dump($rta);
-                // $claveEncriptada = Persona::encriptarContraseña($clave);
-                // var_dump( $datos['datos']);
-                
-                
-                // var_dump($usuarioCreado);
+            
                 if($rta == null)
                 {
                     $usuarioCreado = Usuario::CrearUsuario($usuario,$nombre,$apellido,$clave,'',"socio");
+                    $newSocio = new Personas($usuarioCreado->usuario, $usuarioCreado->nombre,$usuarioCreado->apellido, $usuarioCreado->clave);
 
-                    $socioCreado = new Personas($usuarioCreado->usuario, $usuarioCreado->nombre,$usuarioCreado->apellido, $usuarioCreado->clave);
-
-                    // $token = Usuario::Login($email,$clave,$usuario->password,$usuario->imagenNombre,$usuario->tipo);
-
-                    // var_dump($usuarioCreado);
                     $socio = new Socio;
-                    $socio->nombre = $socioCreado->nombre;
-                    $socio->apellido = $socioCreado->apellido;
-                    $socio->usuario = $socioCreado->usuario;
-                    $socio->clave = $socioCreado->clave;
+                    $socio->nombre = $newSocio->nombre;
+                    $socio->apellido = $newSocio->apellido;
+                    $socio->usuario = $newSocio->usuario;
+                    $socio->clave = $newSocio->clave;
                     
-
                     $rta = $socio->save();
 
                     $token = Usuario::Login($usuario,$clave,$usuarioCreado->clave,$usuarioCreado->imagenNombre,"socio");
 
-                    $datos['datos'] = 'Se creo el socio correctamente!';
+                    $datos['datos'] = 'Socio generado exitosamente!';
                     $datos['token'] = $token;
-                    // var_dump($user);
                 }
                 else
                 {
                     $rta = false;
-                    $datos['datos'] = "Error, socio existente";
+                    $datos['datos'] = "Ya existe el socio en la DB";
                     
                 }
             }
             else{
-                $datos['datos'] = "Se dio de alta la cantidad maxima de socios";
+                $datos['datos'] = "La cantidad máxima de socios registrados son 3";
             }
         }
         else{
@@ -117,8 +83,7 @@ class SocioController {
         
         $email = $parsedBody['email'];
         $clave = $parsedBody['clave'];
-        // $nombre = $parsedBody['nombre'];
-        
+
         $usuario = User::where('email', $email)
         ->first();
         
@@ -158,21 +123,12 @@ class SocioController {
             
             foreach ($empleados as $key => $value) {
                 $estadoEmpleado = EstadoEmpleado::where('id',$value['id_estado'])->first();
-                // $estadoDePedido = EstadoPedido::where('id',$value['id_estado'])->first();
-                // $cliente = Cliente::where('id',$value['id_cliente'])->first();
-                // $empleado = Empleado::where('id',$value['id_empleado'])->first();
-                // $mesa = Mesa::where('id',$value['id_mesa'])->first();
-                // $estadoMesa = EstadoMesa::where('id',$mesa->id_estado)->first();
                 
 
                 $datos['datos'] .= "<br> Empleado: Nombre: " . $value['nombre'] . " - Apellido: " . $value['apellido']
                 . "<br> - Fecha de ingreso:" . "  " . $value['created_at']
                 . "<br> - Cantidad de operaciones:" . "  " . $value['operaciones']
                 . "<br> - Estado del empleado:" . "  " . $estadoEmpleado->descripcion. "<br><br>" ;
-                // . "<br> - Precio: " . $value['precio']
-                // . "<br> - Cliente: " . $cliente->nombre . ", " . $cliente->apellido
-                // . "<br> - Empleado: " . $empleado->nombre . ", " . $empleado->apellido
-                // . "<br> - Mesa: " . " Descripcion: " . $estadoMesa->descripcion . " - Codigo: " . $mesa->codigo . "<br><br>";
             }
             
         }
@@ -190,11 +146,6 @@ class SocioController {
         $id = $args['id'];
         $email = $params['email'];
         $name = $params['name'];
-        // var_dump($request);
-        // $parsedBody = $request->getParsedBody();
-        // var_dump($params);
-        // $email = $parsedBody['email'];
-        // $name = $parsedBody['name'];
 
         $user = User::find($id);
         if($user){
@@ -221,13 +172,13 @@ class SocioController {
         return $response;
     }
 
+
+
     public function delete($request, $response, $args)
     {
         $id = $args['id'];
         $parsedBody = $request->getParsedBody();
         
-        // $rta = User::where('email', $email)->first();
-
         $user = User::find($id);
         if($user){
             if($user->delete()){
@@ -241,8 +192,10 @@ class SocioController {
 
         $response->getBody()->write(json_encode($datos));
         return $response;
-        // getAll();
     }
+
+
+
     public function isEmail($email){
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -251,12 +204,5 @@ class SocioController {
         else{
             return $email;
         }
-    }
-
-    // $respuesta = new stdClass;
-    // $respuesta->success = true;
-
-    // $respuesta->data = $datos; 
-
-    
+    }    
 }

@@ -27,52 +27,32 @@ class PedidoController {
         $cantidad = 0;
         $parsedBody = $request->getParsedBody();
 
-        // $bebida = $parsedBody['bebida'];
-        // $comida = $parsedBody['comida'];
-        // $bebida2 = $parsedBody['bebida2'];
-        
-
         $token = $request->getHeader('token');
 
         $clienteAutenticado = Token::VerificarToken($token[0]);
 
         $cantidadDeItems = count($parsedBody);
 
-        
-
-        // var_dump($clienteAutenticado);
-
-        //TODO: traerme cliente de la base y sacar el id, traerme los mozos y la disponibilidad, si alguno esta disponible sacar el id y cambiarle el estado a no disponible
-        //dar de alta los items a pedir, dar de alta estado del pedido y asignar el id de la tabla estado_pedido a id_estado de la tabla pedidos
-
         if($clienteAutenticado){
             $clienteBase = Cliente::where('usuario', $clienteAutenticado->usuario)->where('clave',$clienteAutenticado->clave)->first();
         }
 
         $mozoDisponible = $this->obtenerMozoDisponible();
-
-        
-        
-        // for ($i=0; $i < count($bebidaArray) ; $i++) {
-            
-        //     $cantidad = $i+1;
-        // }
-        
-        //obtener tabla mesa, verificar disponibilidad, si esta disponible obtener el id
         
         $mesaDisponible = Mesa::where('id_estado',4)->first();
 
         $detalle = "";
         if($clienteBase != null){
             if( $mesaDisponible != null){
-                if($mozoDisponible != null){
+                if($mozoDisponible == null){                    
+                    $datos['datos'] = 'No hay mozos disponibles al momento';
+                }
+                else{
                     for ($i=0; $i < count($parsedBody); $i++) {
                         $j = $i+1;
                         $detalle .= $parsedBody['item'.$j] . " ";
                     }
                     $pedidoCreado = new Pedidos($detalle,count($parsedBody));
-
-                    // $mesaNueva = $this->altaMesa($detalle,1);
 
                     $mozoDisponible->disponible = 0;
                     $mozoDisponible->operaciones = $mozoDisponible->operaciones+1;
@@ -116,9 +96,6 @@ class PedidoController {
                     $datos['datos'] = 'Se creo el pedido correctamente!' . ' - Codigo del pedido: ' . $pedidoCreado->codigo
                     . " - Codigo de la mesa: " . $mesaDisponible->codigo;
                 }
-                else{
-                    $datos['datos'] = 'No hay mozo disponible para atender, aguarde un instante por favor, gracias.';
-                }
             }
             else{
                 $datos['datos'] = 'No hay mesa disponible, aguarde un instante por favor, gracias.';
@@ -139,8 +116,6 @@ class PedidoController {
     
     public function obtenerMozoDisponible(){
         $mozosBase = Empleado::get()->where('tipo','mozo')->toArray();
-        
-        // $mozosBaseObj = json_encode($mozosBase);
 
         foreach ($mozosBase as $key => $value) {
             if($value['tipo'] == "mozo" && $value['disponible'] == 1){
@@ -156,16 +131,10 @@ class PedidoController {
     }
     public function prepararPedido($request, $response, $args){
 
-        /**El empleado que tomar ese pedido para prepararlo, al momento de hacerlo debe cambiar el
-        estado de ese pedido como “en preparación” y agregarle un tiempo estimado de preparación.
-        teniendo en cuenta que puede haber más de un empleado en el mismo puesto .ej: dos bartender
-        o tres cocineros. */
         $parsedBody = $request->getParsedBody();
 
         $codigo = $parsedBody['codigo'];
-        //si es cerveza ver disponibilidad de cervecero
-        //si es comida empanada, pizza o hamburguesa ver disponibilidad de cocinero
-        //si es tragos ver disponibilidad de bartender
+        
         $pedidoBase = Pedido::where('codigo', $codigo)->first();
         
         $cerveceroDisponible = Empleado::where('tipo','cervecero')->where('disponible',1)->first();
@@ -177,9 +146,7 @@ class PedidoController {
             foreach ($itemsDePedido as $key => $value) {
                 $itemActual = Item::where('id', $value['id'])->first();
                 if($value['descripcion'] == 'cerveza'){
-                    //obtener bartender disponible y cambiar disponibilidad a 0
-                    
-                    //calcular tiempo estimado
+               
                     if($cerveceroDisponible != null && $cerveceroDisponible->id_estado == 1){
                         $cerveceroDisponible->disponible = 0;
                         $cerveceroDisponible->operaciones = $cerveceroDisponible->operaciones+1;
@@ -191,7 +158,6 @@ class PedidoController {
                         $itemActual->save();
                         $aux1 = $itemActual->tiempoEstimado;
                         $pedidoBase->tiempo = $itemActual->tiempoEstimado;
-                        // $pedidoBase->id_empleado = $cerveceroDisponible->id;
                         $pedidoBase->id_sector = 2;
                         
                         $datos['datos'] = 'El pedido de cerveza esta en preparacion';
@@ -259,8 +225,6 @@ class PedidoController {
                 $tiempo3 = explode(':',$aux3);
 
 
-                //comparo por minutos
-
                 if($tiempo1[1] > $tiempo2[1]){
                     if($tiempo1[1] > $tiempo3[1]){
                         $pedidoBase->tiempo = $aux1;
@@ -295,13 +259,8 @@ class PedidoController {
         $parsedBody = $request->getParsedBody();
 
         $codigo = $parsedBody['codigo'];
-        //si es cerveza ver disponibilidad de cervecero
-        //si es comida empanada, pizza o hamburguesa ver disponibilidad de cocinero
-        //si es tragos ver disponibilidad de bartender
-        // var_dump($codigo);
-        $pedidoBase = Pedido::where('codigo', $codigo)->first();
-        // var_dump($pedidoBase);
-        
+     
+        $pedidoBase = Pedido::where('codigo', $codigo)->first(); 
         
 
         if($pedidoBase != null){
@@ -399,7 +358,7 @@ class PedidoController {
         if($pedidoBase != null && $mesaBase!= null){
             if($pedidoBase->id_mesa == $mesaBase->id){
                 $estadoDePedido = EstadoPedido::where('id',$pedidoBase->id_estado)->first();
-                $datos['datos'] = "Estado del pedido: " . $estadoDePedido->descripcion . " " . " - Tiempo estimado de entrega: " . $pedidoBase->tiempo;
+                $datos['datos'] = "STATUS DEL PEDIDO: " . $estadoDePedido->descripcion . " " . " - Tiempo estimado de entrega: " . $pedidoBase->tiempo;
             }
             else{
                 $datos['datos'] = 'Algunos de los codigos son incorrectos';
@@ -411,8 +370,7 @@ class PedidoController {
         $payload = json_encode($datos);
         $response->getBody()->write($payload);
         
-        return $response
-          ->withHeader('Content-Type', 'application/json');
+        return $response->withHeader('Content-Type', 'application/json');
           
 
     }
@@ -421,6 +379,7 @@ class PedidoController {
         $nombreMozo = $parsedBody['nombre'];
         $apellidoMozo = $parsedBody['apellido'];
         $codigoMesa = $parsedBody['codigoMesa'];
+        
         if($nombreMozo != null && $nombreMozo != "" && $apellidoMozo != null && $apellidoMozo != ""){
             
             if($codigoMesa != null){
@@ -527,11 +486,8 @@ class PedidoController {
         return $response
           ->withHeader('Content-Type', 'application/json');
     }
-    public function getPedidoSocio($request, $response, $args){
+    public function allPedidoSocio($request, $response, $args){
 
-        // var_dump($args);
-        
-        //obtendo id de la mesa, id del pedido y verifico si el pedido->id_mesa es igual a mesa->id
         $pedidos = Pedido::get()->toArray();
         $datos['datos'] ="";
         
@@ -543,7 +499,6 @@ class PedidoController {
                 $mesa = Mesa::where('id',$value['id_mesa'])->first();
                 $estadoMesa = EstadoMesa::where('id',$mesa->id_estado)->first();
                 $items = Item::get()->where('id_pedido',$value['id'])->toArray();
-                // var_dump($items);
                 
                 $datos['datos'] .= "<br> Estado del pedido: " . $estadoDePedido->descripcion 
                 . "<br> -Codigo de pedido:" . "  " . $value['codigo']
@@ -568,75 +523,4 @@ class PedidoController {
           
 
     }
-    
-
-
-    
-    public function update($request, $response, $args)
-    {
-        $params = (array)$request->getQueryParams();
-
-        $id = $args['id'];
-        $email = $params['email'];
-        $name = $params['name'];
-        // var_dump($request);
-        // $parsedBody = $request->getParsedBody();
-        // var_dump($params);
-        // $email = $parsedBody['email'];
-        // $name = $parsedBody['name'];
-
-        $user = User::find($id);
-        if($user){
-            $user->email = $email;
-            $user->name = $name;
-            
-            if($user->save()){
-
-                $datos['datos'] = "Se modifico el usuario correctamente.";
-                
-            }
-            else{
-                $datos['datos'] = "Error al modificar datos";
-            }
-            
-        }
-        else{
-            $datos['datos'] = "Error. ID no encontrado";
-        }
-
-        // $rta = $user->save();
-
-        $response->getBody()->write(json_encode($datos));
-        return $response;
-    }
-
-    public function delete($request, $response, $args)
-    {
-        $id = $args['id'];
-        $parsedBody = $request->getParsedBody();
-        
-        // $rta = User::where('email', $email)->first();
-
-        $user = User::find($id);
-        if($user){
-            if($user->delete()){
-                $datos['datos'] = "Se elimino el usuario correctamente.";
-            }
-        }
-        else{
-            $datos['datos'] = "Error. ID no encontrado";
-        }
-        
-
-        $response->getBody()->write(json_encode($datos));
-        return $response;
-        // getAll();
-    }
-    
-    // $respuesta = new stdClass;
-    // $respuesta->success = true;
-
-    // $respuesta->data = $datos; 
-
-    
 }

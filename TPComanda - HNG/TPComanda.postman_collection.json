@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "925fed74-b439-4b98-9a88-9c221e0ec7de",
+		"name": "TPComanda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alta de Socio",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "Jessica",
+							"type": "text"
+						},
+						{
+							"key": "apellido",
+							"value": "Silva",
+							"type": "text"
+						},
+						{
+							"key": "usuario",
+							"value": "JSilva",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/registro/altaSocio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"registro",
+						"altaSocio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta de Empleado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "Carlos",
+							"type": "text"
+						},
+						{
+							"key": "apellido",
+							"value": "Hex",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "mozo",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/registro/altaEmpleado",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"registro",
+						"altaEmpleado"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta de Cliente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "Eric",
+							"type": "text"
+						},
+						{
+							"key": "apellido",
+							"value": "Gimenez",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						},
+						{
+							"key": "usuario",
+							"value": "EGimenez",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/registro/altaCliente",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"registro",
+						"altaCliente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta de Mesa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiSlNpbHZhIiwiY2xhdmUiOiIkMnkkMTAkVU5WMldYTXZoXC9xSjZwbGRGSHN6SGUuczNNMjhUYldLVFdJemlQMlFudUY3TjBmT0FGanZXIiwidGlwbyI6InNvY2lvIn0.Z3IQ7VssA6AFBIKAcwR50fuqQq9_JsE5MajnjYeWtKk"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "descripcion",
+							"value": "Mesa VIP",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/registro/altaMesa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"registro",
+						"altaMesa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Realizo Pedido - ONLY CLIENTE",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiRUdpbWVuZXoiLCJjbGF2ZSI6IiQyeSQxMCRVcmxIRlhZbnVnVUJyVjJOT2dkY0wuaVU4U3VHdkRDS24uS0lCbExXUXN0UEpBTFBPYVdSeSIsInRpcG8iOiJjbGllbnRlIn0.ZgdT9F5m12vgA7--rTfRd59-g4EFwRW4ljS02m2OCrU"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "item1",
+							"value": "cerveza",
+							"type": "text"
+						},
+						{
+							"key": "item2",
+							"value": "empanadas",
+							"type": "text"
+						},
+						{
+							"key": "item3",
+							"value": "vino",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/pedido/altaPedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"pedido",
+						"altaPedido"
+					]
+				},
+				"description": "Alta de pedido autenticando el cliente con token, verificando disponibilidad del mozo para tender la mesa y tomando el pedido,\r\ndevolviendo lo que se pidio y el codigo del pedido y de la mesa"
+			},
+			"response": []
+		},
+		{
+			"name": "PrepararPedido (POST)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "codigo",
+							"value": "65b12",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/pedido/prepararPedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"pedido",
+						"prepararPedido"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ServirPedido (POST)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "codigo",
+							"value": "65b12",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/pedido/servirPedido",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"pedido",
+						"servirPedido"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Estado del pedido (GET) - ONLY CLIENTE",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiRUdpbWVuZXoiLCJjbGF2ZSI6IiQyeSQxMCRVcmxIRlhZbnVnVUJyVjJOT2dkY0wuaVU4U3VHdkRDS24uS0lCbExXUXN0UEpBTFBPYVdSeSIsInRpcG8iOiJjbGllbnRlIn0.ZgdT9F5m12vgA7--rTfRd59-g4EFwRW4ljS02m2OCrU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/pedido/codigoMesa/98339/codigoPedido/65b12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"pedido",
+						"codigoMesa",
+						"98339",
+						"codigoPedido",
+						"65b12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Estado de pedidos - ONLY SOCIO",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiSlNpbHZhIiwiY2xhdmUiOiIkMnkkMTAkVU5WMldYTXZoXC9xSjZwbGRGSHN6SGUuczNNMjhUYldLVFdJemlQMlFudUY3TjBmT0FGanZXIiwidGlwbyI6InNvY2lvIn0.Z3IQ7VssA6AFBIKAcwR50fuqQq9_JsE5MajnjYeWtKk",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/pedido/pedidosSocio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"pedido",
+						"pedidosSocio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CobrarMesa (POST)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiSlNpbHZhIiwiY2xhdmUiOiIkMnkkMTAkVU5WMldYTXZoXC9xSjZwbGRGSHN6SGUuczNNMjhUYldLVFdJemlQMlFudUY3TjBmT0FGanZXIiwidGlwbyI6InNvY2lvIn0.Z3IQ7VssA6AFBIKAcwR50fuqQq9_JsE5MajnjYeWtKk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "Nix",
+							"type": "text"
+						},
+						{
+							"key": "apellido",
+							"value": "Martinez",
+							"type": "text"
+						},
+						{
+							"key": "codigoMesa",
+							"value": "98339",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/mesa/cobrarMesa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"mesa",
+						"cobrarMesa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CerrarMesa (POST)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiSlNpbHZhIiwiY2xhdmUiOiIkMnkkMTAkVU5WMldYTXZoXC9xSjZwbGRGSHN6SGUuczNNMjhUYldLVFdJemlQMlFudUY3TjBmT0FGanZXIiwidGlwbyI6InNvY2lvIn0.Z3IQ7VssA6AFBIKAcwR50fuqQq9_JsE5MajnjYeWtKk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "codigoMesa",
+							"value": "98339",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/progIII/TPComanda - HNG/mesa/cerrarMesa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"progIII",
+						"TPComanda - HNG",
+						"mesa",
+						"cerrarMesa"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "19e098ae-6fbb-48b4-affe-976063d32765",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "11c03c68-0b03-4a22-b544-e59b7f885a26",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

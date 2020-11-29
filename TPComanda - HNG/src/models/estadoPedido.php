@@ -2,8 +2,8 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class Mesa extends Model{
-
+class EstadoPedido extends Model{
     protected $primaryKey = 'id';
-    protected $table = 'mesas';
+    protected $table = 'estado_pedido';
+    
 }

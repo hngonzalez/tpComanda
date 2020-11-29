@@ -1,0 +1,24 @@
+{
+    "name": "nahue/tp-comanda",
+    "authors": [
+        {
+            "name": "Nahuel Gonzalez",
+            "email": "40776472+hngonzalez@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^5.2",
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.2",
+        "illuminate/database": "^8.16",
+        "illuminate/events": "^8.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Firebase\\JWT\\": "src",
+            "Clases\\": "clases",
+            "App\\": "src",
+            "Config\\": "config"
+        }
+    }
+}
